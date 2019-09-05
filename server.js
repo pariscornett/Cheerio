@@ -27,46 +27,46 @@ mongoose.connect("mongodb://localhost/scrapedb", { useNewUrlParser: true });
 
 //GET--->scrapes NYT website
 app.get("/scrape", function(req, res) {
-    axios.get("https://www.nytimes.com/").then(function(response) {
+    axios.get("http://www.echojs.com/").then(function(response) {
         var $ = cheerio.load(response.data); //load response into cheerio with $ selector
 
         //grab each h2 and article tag
-        $("h2").each(function(i, element) {
+        $("article h2").each(function(i, element) {
             //establish an empty object for results to dump into
-            var results = [];
+            var result = {};
 
-            // Save the text of the element in a "title" variable
-            var title = $(element).text();
+            // // Save the text of the element in a "title" variable
+            // var title = $(element).text();
 
-            // In the currently selected element, look at its child elements (i.e., its a-tags),
-            // then save the values for any "href" attributes that the child elements may have
-            var link = $(element).children().attr("href");
+            // // In the currently selected element, look at its child elements (i.e., its a-tags),
+            // // then save the values for any "href" attributes that the child elements may have
+            // var link = $(element).children().attr("href");
 
-            // Save these results in an object that we'll push into the results array we defined earlier
-            results.push({
-            title: title,
-            link: link
-            });
+            // // Save these results in an object that we'll push into the results array we defined earlier
+            // results.push({
+            // title: title,
+            // link: link
+            // });
        
-            console.log(results);
+            // console.log(results);
 
             // //add the text and href of every link, and save them as properties of the result object
-            // result.title = $(this)
-            //     .children("a")
-            //     .text();
-            // result.link = $(this)
-            //     .children("a")
-            //     .attr("href");
+            result.title = $(this)
+                .children("a")
+                .text();
+            result.link = $(this)
+                .children("a")
+                .attr("href");
 
-            // console.log(result); 
+            //console.log(results); 
 
             //use the result object we just built to create a new Article entry in db
-            // db.Article.create(result)
-            //     .then(function(dbArticle) {
-            //         console.log(dbArticle);
-            //     }).catch(function(err) {
-            //         console.log(err);
-            //     });
+            db.Article.create(result)
+                .then(function(dbArticle) {
+                    console.log(dbArticle);
+                }).catch(function(err) {
+                    console.log(err);
+                });
         });
 
         //send message to client 
