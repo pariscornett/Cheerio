@@ -31,6 +31,8 @@ mongoose.connect(MONGODB_URI);
 //routes
 
 //GET--->scrapes NYT website
+
+
 app.get("/scrape", function(req, res) {
     axios.get("http://www.echojs.com/").then(function(response) {
         var $ = cheerio.load(response.data); //load response into cheerio with $ selector
