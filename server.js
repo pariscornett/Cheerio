@@ -23,6 +23,11 @@ app.use(express.static("public")); //make public a static folder
 //connect to mongo
 mongoose.connect("mongodb://localhost/scrapedb", { useNewUrlParser: true });
 
+//connect with mLab
+var MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/mongoHeadlines";
+
+mongoose.connect(MONGODB_URI);
+
 //routes
 
 //GET--->scrapes NYT website
